@@ -1,0 +1,34 @@
+﻿@page
+@model BookModel
+@{
+    ViewData["Title"] = "Book Page";
+}
+<h1>@ViewData["Title"]</h1>
+
+<div class="text-center">
+    <h1 class="display-4">Add Books</h1>
+    <div class="col-md-12">
+        <form method="post">
+            <input type="hidden" asp-for="Book.Id" />
+            <div class="col-row" style="text-align:left">
+                <div class="form-group">
+                    <div class="form-label">Name</div>
+                    <input class="form-control" type="text" asp-for="Book.Name" />
+                </div>
+                <div class="form-group">
+                    <div class="form-label">Description</div>
+                    <input class="form-control" type="text" asp-for="Book.Description" />
+                </div>
+                <div class="form-group">
+                    <div class="form-label">Author</div>
+                    <input class="form-control" type="text" asp-for="Book.Author" />
+                </div>
+            </div>
+            <div class="col-row" style="text-align:left">
+                <br />
+                <input class="btn btn-success" type="submit" value="Save" />
+            </div>
+        </form>
+        
+    </div>
+</div>
