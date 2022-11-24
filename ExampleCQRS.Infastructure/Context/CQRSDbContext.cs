@@ -15,6 +15,7 @@ namespace ExampleCQRS.Infastructure.Context
 
         }
         public DbSet<Book> Books { get; set; }
+        public DbSet<Encyclopedia> Encyclopedias { get; set; }
         public CQRSDbContext(DbContextOptions<CQRSDbContext> options) : base(options)
         {            
         }

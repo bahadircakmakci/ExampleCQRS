@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleCQRS", "ExampleCQRS\ExampleCQRS.csproj", "{BC81B4B9-1B59-4AB1-BE55-3878327C96B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleCQRS", "ExampleCQRS\ExampleCQRS.csproj", "{BC81B4B9-1B59-4AB1-BE55-3878327C96B5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{913147EF-C420-42CE-AC4C-4CDA1B6D6F20}"
 EndProject
@@ -15,11 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "InfrastructureLayer", "Infr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PresentationLayer", "PresentationLayer", "{F4A7349A-ACD2-4633-A7B7-6144CDE3C8AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleCQRS.Application", "ExampleCQRS.Application\ExampleCQRS.Application.csproj", "{C5C519C6-49CC-4A64-A17B-B8441FC978A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleCQRS.Application", "ExampleCQRS.Application\ExampleCQRS.Application.csproj", "{C5C519C6-49CC-4A64-A17B-B8441FC978A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleCQRS.Domain", "ExampleCQRS.Domain\ExampleCQRS.Domain.csproj", "{66BCC2D2-92C3-42F0-BB90-C2A437042753}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleCQRS.Domain", "ExampleCQRS.Domain\ExampleCQRS.Domain.csproj", "{66BCC2D2-92C3-42F0-BB90-C2A437042753}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleCQRS.Infastructure", "ExampleCQRS.Infastructure\ExampleCQRS.Infastructure.csproj", "{B7F3A745-2138-417B-B19E-1BA95DA9FEA5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleCQRS.Infastructure", "ExampleCQRS.Infastructure\ExampleCQRS.Infastructure.csproj", "{B7F3A745-2138-417B-B19E-1BA95DA9FEA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

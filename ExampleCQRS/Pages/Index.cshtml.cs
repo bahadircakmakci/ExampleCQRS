@@ -9,22 +9,12 @@ namespace ExampleCQRS.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly IMediator _mediator;
-        public IndexModel(IMediator mediator)
+       
+       
+        public async Task OnGet()
         {
-            _mediator = mediator;
+            
         }
-        [BindProperty]
-        public List<Book> Books { get; set; }
-        public async Task OnGetAsync()
-        {
-            Thread.Sleep(500);
-            Books = await _mediator.Send(new GetBookQueryList());
-        }
-        public async Task<IActionResult> OnGetDeleteAsync(string id)
-        {
-            await _mediator.Send(new DeleteBookCommand(Guid.Parse(id)));
-            return RedirectToPage("Index");
-        }
+         
     }
 }

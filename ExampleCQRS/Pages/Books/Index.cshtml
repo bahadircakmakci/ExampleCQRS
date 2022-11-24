@@ -1,0 +1,45 @@
+﻿@page
+@model ExampleCQRS.Pages.Books.IndexModel
+@{
+    ViewData["Title"] = "Book page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Book List</h1>
+    <div class="col-md-12">
+        <div class="col-row">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Author</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Books != null)
+                        {
+                            foreach (var bks in Model.Books)
+                            {
+                                <tr>
+                                    <td>@bks.Id</td>
+                                    <td>@bks.Name</td>
+                                    <td>@bks.Description</td>
+                                    <td>@bks.Author</td>
+                                    <td>
+                                        <a class="btn btn-warning btn-sm" asp-page="Book" asp-route-id="@bks.Id">Edit</a>
+                                        <a class="btn btn-danger btn-sm" asp-page-handler="Delete" asp-route-id="@bks.Id">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
