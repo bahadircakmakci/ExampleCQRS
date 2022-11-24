@@ -27,7 +27,10 @@ namespace ExampleCQRS.Application.Handlers.Books
             if (isCheck == false)
             {
                 var firstRecord = await Repository.GetAllAsync();
-                await _elasticRepository.InsertDocuments("book", firstRecord);
+                if (firstRecord.Count()>0)
+                {
+                    await _elasticRepository.InsertDocuments("book", firstRecord);
+                }                
             }
             var res = await _elasticRepository.GetDocuments("book");
             return res;
