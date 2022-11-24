@@ -11,7 +11,7 @@ namespace ExampleCQRS.Infastructure.Repositories.Base.Interfaces
     {
         Task<bool> ChekIndex(string indexName);
         Task InsertOrUpdateDocument(string indexName, TEntity entity);       
-        Task InsertDocuments(string indexName, List<TEntity> entitys);
+        Task InsertDocuments(string indexName, List<TEntity> entity);
         Task<TEntity> GetDocument(string indexName, Guid id);
         Task<List<TEntity>> GetDocuments(string indexName);
         Task RemoveDocument(string indexName, Guid id);

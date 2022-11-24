@@ -65,9 +65,9 @@ namespace ExampleCQRS.Infastructure.Repositories.Base.Concrete
             var response = await _client.DeleteAsync<TEntity>(id, d => d.Index(indexName.ToLower()));
         }
 
-        public async Task InsertDocuments(string indexName, List<TEntity> entitys)
+        public async Task InsertDocuments(string indexName, List<TEntity> entity)
         {
-            await _client.IndexManyAsync(entitys, index: indexName.ToLower());
+            await _client.IndexManyAsync(entity, index: indexName.ToLower());
         }
 
 
