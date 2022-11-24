@@ -1,5 +1,4 @@
-﻿using ExampleCQRS.Application.Elasticsearch.BookElasticServices;
-using ExampleCQRS.Application.Queries.Books;
+﻿using ExampleCQRS.Application.Queries.Books;
 using ExampleCQRS.Domain.Entities.Concrete;
 using ExampleCQRS.Infastructure.Repositories.Base.Interfaces;
 using MediatR;
@@ -13,23 +12,24 @@ namespace ExampleCQRS.Application.Handlers.Books
 {
     public class GetBookListHandler : IRequestHandler<GetBookQueryList, List<Book>>
     {
-        private readonly IBookElasticsearchService _bookelasticsearchService;
+        
         private readonly IRepository<Book,Guid> Repository;
-        public GetBookListHandler(IBookElasticsearchService bookelasticsearchService, IRepository<Book, Guid> repository)
-        {
-            _bookelasticsearchService=bookelasticsearchService;
+        private readonly IElastichSearchRepository<Book, Guid> _elasticRepository;
+        public GetBookListHandler(IRepository<Book, Guid> repository, IElastichSearchRepository<Book, Guid> elasticRepository)
+        {         
             Repository = repository;
+            _elasticRepository = elasticRepository;
         }
 
         public async Task<List<Book>> Handle(GetBookQueryList request, CancellationToken cancellationToken)
         {
-             var isCheck= await _bookelasticsearchService.ChekIndex("book");
+             var isCheck= await _elasticRepository.ChekIndex("book");
             if (isCheck == false)
             {
                 var firstRecord = await Repository.GetAllAsync();
-                await _bookelasticsearchService.InsertDocuments("book", firstRecord);
+                await _elasticRepository.InsertDocuments("book", firstRecord);
             }
-            var res = await _bookelasticsearchService.GetDocuments("book");
+            var res = await _elasticRepository.GetDocuments("book");
             return res;
         }
     }

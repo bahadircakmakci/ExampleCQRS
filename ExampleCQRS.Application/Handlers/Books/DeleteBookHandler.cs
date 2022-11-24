@@ -1,5 +1,4 @@
 ﻿using ExampleCQRS.Application.Commands.Books;
-using ExampleCQRS.Application.Elasticsearch.BookElasticServices;
 using ExampleCQRS.Domain.Entities.Concrete;
 using ExampleCQRS.Infastructure.Repositories.Base.Interfaces;
 using MediatR;
@@ -14,17 +13,17 @@ namespace ExampleCQRS.Application.Handlers.Books
     public class DeleteBookHandler : IRequestHandler<DeleteBookCommand, Guid>
     {
         public readonly IRepository<Book, Guid> Repository;
-        public readonly IBookElasticsearchService _bookElasticsearchService;
-        public DeleteBookHandler(IRepository<Book, Guid> repository, IBookElasticsearchService bookElasticsearchService)
+        private readonly IElastichSearchRepository<Book, Guid> _elasticRepository;
+        public DeleteBookHandler(IRepository<Book, Guid> repository, IElastichSearchRepository<Book, Guid> elasticRepository)
         {
             Repository = repository;
-            _bookElasticsearchService = bookElasticsearchService;
+            _elasticRepository = elasticRepository;
         }
 
 
         async Task<Guid> IRequestHandler<DeleteBookCommand, Guid>.Handle(DeleteBookCommand request, CancellationToken cancellationToken)
         {
-            await _bookElasticsearchService.RemoveDocument("book", request.id);
+            await _elasticRepository.RemoveDocument("book", request.id);
             await Repository.DeleteAsync(x => x.Id == request.id, true);            
             return request.id;
         }

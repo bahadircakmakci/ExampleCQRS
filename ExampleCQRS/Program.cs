@@ -1,4 +1,3 @@
-using ExampleCQRS.Application.Elasticsearch.BookElasticServices;
 using ExampleCQRS.Infastructure.Context;
 using ExampleCQRS.Infastructure.Repositories.Base.Concrete;
 using ExampleCQRS.Infastructure.Repositories.Base.Interfaces;
@@ -11,7 +10,7 @@ builder.Services.AddDbContext<CQRSDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Default")));
 
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
-builder.Services.AddScoped<IBookElasticsearchService, BookElasticsearchService>();
+builder.Services.AddScoped(typeof(IElastichSearchRepository<,>), typeof(ElastichSearchRepository<,>));
 builder.Services.AddMediatR(Assembly.Load("ExampleCQRS.Domain"), Assembly.Load("ExampleCQRS.Application"), Assembly.Load("ExampleCQRS.Infastructure"));
 // Add services to the container.
 builder.Services.AddRazorPages();

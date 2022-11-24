@@ -1,4 +1,6 @@
 ﻿using ExampleCQRS.Domain.Entities.Concrete;
+using ExampleCQRS.Domain.Entities.Interfaces;
+using ExampleCQRS.Infastructure.Repositories.Base.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Nest;
 using System;
@@ -7,20 +9,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExampleCQRS.Application.Elasticsearch.BookElasticServices
+namespace ExampleCQRS.Infastructure.Repositories.Base.Concrete
 {
-    public class BookElasticsearchService : IBookElasticsearchService
+    public class ElastichSearchRepository<TEntity,Tkey>: IElastichSearchRepository<TEntity, Tkey> where TEntity : class, IEntity<Tkey>
+                                                                        where Tkey : struct
     {
-
         private readonly IConfiguration _configuration;
         private readonly IElasticClient _client;
 
-        public BookElasticsearchService(IConfiguration configuration)
+        public ElastichSearchRepository(IConfiguration configuration)
         {
             _configuration = configuration;
             _client = CreateInstance();
         }
-
         private ElasticClient CreateInstance()
         {
             string host = _configuration.GetSection("ElasticConnectionSettings:ElasticSearchHost").Value;
@@ -36,7 +37,6 @@ namespace ExampleCQRS.Application.Elasticsearch.BookElasticServices
             return new ElasticClient(settings);
         }
 
-
         public async Task<bool> ChekIndex(string indexName)
         {
             var anyy = await _client.Indices.ExistsAsync(indexName);
@@ -45,58 +45,45 @@ namespace ExampleCQRS.Application.Elasticsearch.BookElasticServices
 
             var response = await _client.Indices.CreateAsync(indexName,
                 ci => ci
-                    .Index(indexName)
-                    .BookMapping()
-                    .Settings(s => s.NumberOfShards(3).NumberOfReplicas(1))                   
+                    .Index(indexName)                   
+                    .Settings(s => s.NumberOfShards(3).NumberOfReplicas(1))
                     );
-
             return false;
 
-        }
-
-        public async Task InsertDocument(string indexName, Book book)
+        }        
+        public async Task InsertOrUpdateDocument(string indexName, TEntity entity)
         {
-
-            var response = await _client.CreateAsync(book, q => q.Index(indexName));
+            var response = await _client.CreateAsync(entity, q => q.Index(indexName));
             if (response.ApiCall?.HttpStatusCode == 409)
             {
-                await _client.UpdateAsync<Book>(book.Id, a => a.Index(indexName).Doc(book));
+                await _client.UpdateAsync<TEntity>(entity, a => a.Index(indexName).Doc(entity));
             }
         }
 
         public async Task RemoveDocument(string indexName, Guid id)
         {
-            var response = await _client.DeleteAsync<Book>(id, d => d.Index(indexName));             
+            var response = await _client.DeleteAsync<TEntity>(id, d => d.Index(indexName.ToLower()));
         }
 
-        public async Task InsertDocuments(string indexName, List<Book> books)
+        public async Task InsertDocuments(string indexName, List<TEntity> entitys)
         {
-            await _client.IndexManyAsync(books, index: indexName);
+            await _client.IndexManyAsync(entitys, index: indexName.ToLower());
         }
 
 
-        public async Task<Book> GetDocument(string indexName, Guid id)
+        public async Task<TEntity> GetDocument(string indexName, Guid id)
         {
-            var response = await _client.GetAsync<Book>(id, q => q.Index(indexName));
+            var response = await _client.GetAsync<TEntity>(id, q => q.Index(indexName.ToLower()));
 
             return response.Source;
 
         }
 
-        public async Task<List<Book>> GetDocuments(string indexName)
+        public async Task<List<TEntity>> GetDocuments(string indexName)
         {
-            var response = await _client.SearchAsync<Book>(q => q.Index(indexName));
+            var response = await _client.SearchAsync<TEntity>(q => q.Index(indexName.ToLower()));
             return response.Documents.ToList();
         }
-    }
 
-    public interface IBookElasticsearchService
-    {
-        Task<bool> ChekIndex(string indexName);
-        Task InsertDocument(string indexName, Book book);
-        Task InsertDocuments(string indexName, List<Book> books);
-        Task<Book> GetDocument(string indexName, Guid id);
-        Task RemoveDocument(string indexName, Guid id);
-        Task<List<Book>> GetDocuments(string indexName);
     }
 }
